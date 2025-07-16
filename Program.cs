@@ -1,112 +1,98 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-namespace ConsoleApp14
+﻿class Task_Tracker
 {
+    public string Title { get; set; }
+    public string Description { get; set; }
+    public DateTime DueDate { get; set; }
+    public string Priority { get; set; }
+    public Status TaskStatus { get; set; }
 
-    enum Status
+    public Task_Tracker(string title, DateTime dueDate, string description, string priority)
     {
-        pending,
-        in_progress,
-        completed
+        Title = title;
+        DueDate = dueDate;
+        Description = description;
+        Priority = priority;
+        TaskStatus = Status.pending;
     }
-    class Task_Tracker
+
+    public void UpdateStatus(Status newStatus)
     {
-
-        public string title { get; set; }
-        public string description { get; set; }
-        public string due_date { get; set; }
-        public string priority { get; set; }
-        public Status TaskStatus { get; set; }
-
-        
-
-        public Task_Tracker(string title, string due_date, string description, string priority)
-        {
-            this.title = title;
-            this.description = description;
-            this.due_date = due_date;
-            this.priority = priority;
-            TaskStatus = Status.pending;
-        }
-
-        public void UpdateStatus(Status newStatus)
-        {
-            TaskStatus = newStatus;
-        }
-        public void DisplayTask()
-        {
-            Console.WriteLine($"Title: {title}");
-            Console.WriteLine($"Description: {description}");
-            Console.WriteLine($"Due Date: {due_date}");
-            Console.WriteLine($"Priority: {priority}");
-            Console.WriteLine($"Status: {TaskStatus}");
-        }
-       public void ViewTaskCategory()
-{
-    if (TaskStatus == Status.completed)
-    {
-        Console.WriteLine("Task is completed");
+        TaskStatus = newStatus;
     }
-    else
+
+    public void DisplayTask()
     {
-        if (DueDate < DateTime.Today)
+        Console.WriteLine($"Title: {Title}");
+        Console.WriteLine($"Description: {Description}");
+        Console.WriteLine($"Due Date: {DueDate.ToShortDateString()}");
+        Console.WriteLine($"Priority: {Priority}");
+        Console.WriteLine($"Status: {TaskStatus}");
+    }
+
+    public void ViewTaskCategory()
+    {
+        if (TaskStatus == Status.completed)
         {
-            Console.WriteLine("Task is overdue");
+            Console.WriteLine("Task is completed");
         }
         else
         {
-            Console.WriteLine("Task is active");
-        }
-    }
-}
-
-        
-
-        
-        ~Task_Tracker()
-        {
-            Console.WriteLine("this task is no longer needed");
-        }
-    }
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            Task_Tracker Task1 = new Task_Tracker("CIS TASK",
-                "2025-05-5",
-                "The Task Tracker project",
-                "High"
-            );
-            Task1.DisplayTask();
-            Task1.UpdateStatus(Status.in_progress);
-            Console.WriteLine("After updating:");
-            Task1.DisplayTask();
-            Task1.UpdateStatus(Status.completed);
-            Console.WriteLine("After completing:");
-            Task1.DisplayTask();
-
-
-            Console.Write("Do you want to exit?");
-            string input = Console.ReadLine();
-            if (input == "Yes")
+            if (DueDate < DateTime.Today)
             {
-                Console.WriteLine("Exiting application safely.");
-
-            }
-            else if (input == "No")
-            {
-                Console.WriteLine("Exit canceled.");
-
+                Console.WriteLine("Task is overdue");
             }
             else
             {
-                Console.WriteLine("Please enter Yes or No.");
+                Console.WriteLine("Task is active");
             }
-
-            Console.ReadLine();
         }
+    }
+
+    ~Task_Tracker()
+    {
+        Console.WriteLine("This task is no longer needed");
+    }
+}
+
+   class Program
+{
+    static void Main(string[] args)
+    {
+        Task_Tracker Task1 = new Task_Tracker(
+            "CIS TASK",
+            new DateTime(2025, 5, 5),  
+            "The Task Tracker project",
+            "High"
+        );
+
+        Task1.DisplayTask();
+        Task1.ViewTaskCategory();
+
+        Task1.UpdateStatus(Status.in_progress);
+        Console.WriteLine("\nAfter updating status to in_progress:");
+        Task1.DisplayTask();
+        Task1.ViewTaskCategory();
+
+        Task1.UpdateStatus(Status.completed);
+        Console.WriteLine("\nAfter updating status to completed:");
+        Task1.DisplayTask();
+        Task1.ViewTaskCategory();
+
+        Console.Write("\nDo you want to exit? (Yes/No): ");
+        string input = Console.ReadLine();
+        if (input == "Yes")
+        {
+            Console.WriteLine("Exiting application safely.");
+        }
+        else if (input == "No")
+        {
+            Console.WriteLine("Exit canceled.");
+        }
+        else
+        {
+            Console.WriteLine("Please enter Yes or No.");
+        }
+
+        Console.ReadLine();
     }
 }
