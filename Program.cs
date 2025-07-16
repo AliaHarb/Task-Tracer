@@ -44,6 +44,26 @@ namespace ConsoleApp14
             Console.WriteLine($"Priority: {priority}");
             Console.WriteLine($"Status: {TaskStatus}");
         }
+       public void ViewTaskCategory()
+{
+    if (TaskStatus == Status.completed)
+    {
+        Console.WriteLine("Task is completed");
+    }
+    else
+    {
+        if (DueDate < DateTime.Today)
+        {
+            Console.WriteLine("Task is overdue");
+        }
+        else
+        {
+            Console.WriteLine("Task is active");
+        }
+    }
+}
+
+        
 
         
         ~Task_Tracker()
